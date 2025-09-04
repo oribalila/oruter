@@ -1,0 +1,2 @@
+---
+python_interpreter_path: "{{ lookup('env','PYTHON_PATH') | default('/usr/bin/python3.12', true) }}"
