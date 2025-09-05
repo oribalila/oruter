@@ -1,0 +1,6 @@
+---
+- name: Give python the capabilities to open sockets
+  capabilities:
+    path: "{{ python_interpreter_path }}"
+    capability: cap_net_raw=eip
+    state: present
