@@ -1,0 +1,8 @@
+[server]
+localhost ansible_connection=local
+
+[server:vars]
+ansible_user="{{ lookup('env', 'ANSIBLE_USER') | default('DefaultUser', true) }}"
+ansible_pass="{{ lookup('env', 'ANSIBLE_PASS') | default('', true) }}"
+ansible_become_pass="{{ lookup('env', 'ANSIBLE_BECOME_PASS') | default('', true) }}"
+
