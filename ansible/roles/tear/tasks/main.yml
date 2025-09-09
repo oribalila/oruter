@@ -1,0 +1,2 @@
+---
+- import_tasks: tasks/down_privilege_script.yml
