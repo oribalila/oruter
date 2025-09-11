@@ -1,0 +1,34 @@
+---
+services:
+  client1:
+    image: "${CLIENT_IMAGE}"
+    tty: true
+    networks:
+      c1_network:
+
+  client2:
+    image: "${CLIENT_IMAGE}"
+    tty: true
+    networks:
+      c2_network:
+
+networks:
+  c1_network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        -
+          subnet: 1.1.1.0/24
+    driver_opts:
+      com.docker.network.bridge.name: c1_iface
+
+  c2_network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        -
+          subnet: 2.2.2.0/24
+    driver_opts:
+      com.docker.network.bridge.name: c2_iface
