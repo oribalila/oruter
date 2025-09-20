@@ -20,6 +20,10 @@ printf "\t- Disabling ARP on c1_iface,c2_iface...\n"
 sudo ip link set dev c1_iface arp off
 sudo ip link set dev c2_iface arp off
 
+# Disable kernel ICMP Echo Replies so only the router answers pings.
+printf "\t- Disabling kernel ICMP Echo Replies...\n"
+sudo sysctl net.ipv4.icmp_echo_ignore_all=1 > /dev/null
+
 printf "${GREEN}[v] Lab environment started and host networking configured.${NC}\n"
 
 cd $current_path
