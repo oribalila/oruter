@@ -28,6 +28,15 @@ sudo sysctl net.ipv4.icmp_echo_ignore_all=1 > /dev/null
 printf "\t- Disabling kernel IP forwarding...\n"
 sudo sysctl net.ipv4.ip_forward=0 > /dev/null
 
+# Remove pre-routing iptables configuration Docker made to our bridge networks.
+# This is redundant if your Docker daemon is configured with { "iptables": false }
+printf "\t- Cleaning up iptables raw table PREROUTING rules for c1_iface and c2_iface (if any)...\n"
+sudo iptables -t raw -L PREROUTING -v --line-numbers  \
+    | grep -E 'c1_iface|c2_iface' \
+    | awk '{print $1}' \
+    | sort -rn \
+    | xargs -r -I{} sudo iptables -t raw -D PREROUTING {}
+
 printf "${GREEN}[v] Lab environment started and host networking configured.${NC}\n"
 
 cd $current_path
