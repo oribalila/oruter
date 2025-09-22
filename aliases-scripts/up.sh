@@ -24,6 +24,10 @@ sudo ip link set dev c2_iface arp off
 printf "\t- Disabling kernel ICMP Echo Replies...\n"
 sudo sysctl net.ipv4.icmp_echo_ignore_all=1 > /dev/null
 
+# Disable kernel IPv4 forwarding so only the router handles packet routing.
+printf "\t- Disabling kernel IP forwarding...\n"
+sudo sysctl net.ipv4.ip_forward=0 > /dev/null
+
 printf "${GREEN}[v] Lab environment started and host networking configured.${NC}\n"
 
 cd $current_path
