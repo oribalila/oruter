@@ -1,2 +1,7 @@
 ansible/roles/geerlingguy.docker/
 ansible/env.sh
+__pycache__
+.pytest_cache
+unit_tests.pyc
+build
+oruter.egg-info
