@@ -1,11 +1,13 @@
 import sys
 
 from pathlib import Path
+from ipaddress import IPv4Address
 
 from netaddr import EUI
 
 
 sys.path.append(str(Path(__file__).resolve().parent.parent))
+from protocols.arp import ARP
 from protocols.ethernet import Ethernet
 
 
@@ -73,6 +75,131 @@ arp_ethernet_headers_bytes = [
     b"\xff\xff\xff\xff\xff\xff\xaf\x84@bw\xdb\x08\x06",
     b'\xff\xff\xff\xff\xff\xff)"\xbb\xcf&(\x08\x06',
     b"\xff\xff\xff\xff\xff\xffJH\xc2\xf6\x1d\xa4\x08\x06",
+]
+
+arp_headers = [
+    ARP(
+        hardware_type=1,
+        protocol_type=2048,
+        hardware_size=6,
+        protocol_size=4,
+        opcode=1,
+        sender_hardware=EUI("13-9D-10-F4-10-54"),
+        sender_protocol=IPv4Address("241.178.223.68"),
+        target_hardware=EUI("00-00-00-00-00-00"),
+        target_protocol=IPv4Address("106.195.203.37"),
+    ),
+    ARP(
+        hardware_type=1,
+        protocol_type=2048,
+        hardware_size=6,
+        protocol_size=4,
+        opcode=1,
+        sender_hardware=EUI("3E-A5-89-2E-56-7C"),
+        sender_protocol=IPv4Address("171.117.197.54"),
+        target_hardware=EUI("00-00-00-00-00-00"),
+        target_protocol=IPv4Address("13.146.184.131"),
+    ),
+    ARP(
+        hardware_type=1,
+        protocol_type=2048,
+        hardware_size=6,
+        protocol_size=4,
+        opcode=1,
+        sender_hardware=EUI("6B-4E-6C-4B-CD-C0"),
+        sender_protocol=IPv4Address("90.222.250.195"),
+        target_hardware=EUI("00-00-00-00-00-00"),
+        target_protocol=IPv4Address("60.224.99.233"),
+    ),
+    ARP(
+        hardware_type=1,
+        protocol_type=2048,
+        hardware_size=6,
+        protocol_size=4,
+        opcode=1,
+        sender_hardware=EUI("4A-72-0F-70-9E-01"),
+        sender_protocol=IPv4Address("23.62.207.173"),
+        target_hardware=EUI("00-00-00-00-00-00"),
+        target_protocol=IPv4Address("96.94.227.253"),
+    ),
+    ARP(
+        hardware_type=1,
+        protocol_type=2048,
+        hardware_size=6,
+        protocol_size=4,
+        opcode=1,
+        sender_hardware=EUI("E2-B8-C5-80-D5-9D"),
+        sender_protocol=IPv4Address("67.33.91.60"),
+        target_hardware=EUI("00-00-00-00-00-00"),
+        target_protocol=IPv4Address("172.244.192.115"),
+    ),
+    ARP(
+        hardware_type=1,
+        protocol_type=2048,
+        hardware_size=6,
+        protocol_size=4,
+        opcode=1,
+        sender_hardware=EUI("6B-E4-E8-11-9F-F8"),
+        sender_protocol=IPv4Address("76.67.64.108"),
+        target_hardware=EUI("00-00-00-00-00-00"),
+        target_protocol=IPv4Address("19.159.149.234"),
+    ),
+    ARP(
+        hardware_type=1,
+        protocol_type=2048,
+        hardware_size=6,
+        protocol_size=4,
+        opcode=1,
+        sender_hardware=EUI("F8-C9-F6-B3-F1-8B"),
+        sender_protocol=IPv4Address("37.205.157.201"),
+        target_hardware=EUI("00-00-00-00-00-00"),
+        target_protocol=IPv4Address("220.181.159.174"),
+    ),
+    ARP(
+        hardware_type=1,
+        protocol_type=2048,
+        hardware_size=6,
+        protocol_size=4,
+        opcode=1,
+        sender_hardware=EUI("AF-84-40-62-77-DB"),
+        sender_protocol=IPv4Address("205.133.200.196"),
+        target_hardware=EUI("00-00-00-00-00-00"),
+        target_protocol=IPv4Address("229.114.163.242"),
+    ),
+    ARP(
+        hardware_type=1,
+        protocol_type=2048,
+        hardware_size=6,
+        protocol_size=4,
+        opcode=1,
+        sender_hardware=EUI("29-22-BB-CF-26-28"),
+        sender_protocol=IPv4Address("224.209.170.2"),
+        target_hardware=EUI("00-00-00-00-00-00"),
+        target_protocol=IPv4Address("232.168.240.189"),
+    ),
+    ARP(
+        hardware_type=1,
+        protocol_type=2048,
+        hardware_size=6,
+        protocol_size=4,
+        opcode=1,
+        sender_hardware=EUI("4A-48-C2-F6-1D-A4"),
+        sender_protocol=IPv4Address("119.108.122.255"),
+        target_hardware=EUI("00-00-00-00-00-00"),
+        target_protocol=IPv4Address("38.31.142.175"),
+    ),
+]
+arp_headers_bytes = [
+    b"\x00\x01\x08\x00\x06\x04\x00\x01\x13\x9d\x10\xf4\x10T\xf1\xb2\xdfD\x00\x00\x00\x00\x00\x00j\xc3\xcb%",
+    b"\x00\x01\x08\x00\x06\x04\x00\x01>\xa5\x89.V|\xabu\xc56\x00\x00\x00\x00\x00\x00\r\x92\xb8\x83",
+    b"\x00\x01\x08\x00\x06\x04\x00\x01kNlK\xcd\xc0Z\xde\xfa\xc3\x00\x00\x00\x00\x00\x00<\xe0c\xe9",
+    b"\x00\x01\x08\x00\x06\x04\x00\x01Jr\x0fp\x9e\x01\x17>\xcf\xad\x00\x00\x00\x00\x00\x00`^\xe3\xfd",
+    b"\x00\x01\x08\x00\x06\x04\x00\x01\xe2\xb8\xc5\x80\xd5\x9dC![<\x00\x00\x00\x00\x00\x00\xac\xf4\xc0s",
+    b"\x00\x01\x08\x00\x06\x04\x00\x01k\xe4\xe8\x11\x9f\xf8LC@l\x00\x00\x00\x00\x00\x00\x13\x9f\x95\xea",
+    b"\x00\x01\x08\x00\x06\x04\x00\x01\xf8\xc9\xf6\xb3\xf1\x8b%\xcd\x9d\xc9\x00\x00\x00\x00\x00\x00\xdc\xb5\x9f\xae",
+    b"\x00\x01\x08\x00\x06\x04\x00\x01\xaf\x84@bw\xdb\xcd\x85\xc8\xc4\x00\x00\x00\x00\x00\x00\xe5r\xa3\xf2",
+    b'\x00\x01\x08\x00\x06\x04\x00\x01)"\xbb\xcf&(\xe0\xd1\xaa\x02\x00\x00\x00\x00\x00\x00\xe8\xa8\xf0\xbd',
+    b"\x00\x01\x08\x00\x06\x04\x00\x01JH\xc2\xf6\x1d\xa4wlz\xff\x00\x00\x00\x00\x00\x00&\x1f\x8e\xaf",
 ]
 
 # -- Ethernet + IPv4 + ICMP --
