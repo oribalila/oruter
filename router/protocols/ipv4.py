@@ -4,7 +4,8 @@ import struct
 
 from socket import inet_aton
 from ipaddress import IPv4Address
-from dataclasses import dataclass
+from itertools import cycle
+from dataclasses import field, dataclass
 
 from protocols.constants.ipv4_constants import (
     DSF,
@@ -32,6 +33,9 @@ from protocols.constants.ipv4_constants import (
 )
 
 
+current_identifier = cycle(range(0, int.from_bytes(b"\xff" * IDENTIFICATION.size) + 1))
+
+
 @dataclass
 class IPv4:
     """This class represents and handles an IPv4 header."""
@@ -39,7 +43,7 @@ class IPv4:
     header_length: int = MINIMUM_HEADER_LENGTH
     dsf: int = DEFAULT_DSF
     total_length: int = MINIMUM_HEADER_LENGTH
-    identification: int = 0
+    identification: int = field(default_factory=current_identifier.__next__)
     flags: int = Flags.DONT_FRAGMENT
     fragment_offset: int = 0
     ttl: int = INITIAL_TTL
