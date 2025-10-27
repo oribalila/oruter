@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import copy
 import struct
 
 from socket import inet_aton
@@ -58,13 +59,27 @@ class IPv4:
 
         Raise:
             (AttributeError): When an attribute is None
+            (ValueError): When this is an initialization and checksum is wrong
         """
+        NUMBER_OF_ATTRIBUTES = self.__init__.__code__.co_argcount - 1  # 12
+        is_init = False
+        if len(vars(self)) < NUMBER_OF_ATTRIBUTES:
+            is_init = True
         # total_length == MINIMUM_HEADER_LENGTH represents that there is no payload, so we set it to header_length
         if name == "total_length" and value == MINIMUM_HEADER_LENGTH:
             value = self.header_length
         if value is None:
             raise AttributeError(f"{name} can't be None")
         object.__setattr__(self, name, value)
+        if len(vars(self)) == NUMBER_OF_ATTRIBUTES:
+            if self.checksum != 0 and is_init:
+                correct_checksum_header = copy.copy(self)
+                correct_checksum_header.checksum = 0
+                if self.checksum != correct_checksum_header.checksum:
+                    raise ValueError("Checksum is wrong")
+            object.__setattr__(self, "checksum", 0)
+            checksum = IPv4.calculate_internet_checksum(bytes(self))
+            object.__setattr__(self, "checksum", checksum)
 
     @classmethod
     def bytes_constructor(cls, header: bytes) -> IPv4:
@@ -168,3 +183,21 @@ class IPv4:
 
     def __len__(self) -> int:
         return len(bytes(self))
+
+    @staticmethod
+    def calculate_internet_checksum(header: bytes) -> int:
+        """Calculate internet checksum.
+
+        Parameters:
+            (bytes) header: The header to calculate its checksum
+
+        Return:
+            (int): The checksum
+        """
+        checksum = 0
+        if len(header) % 2 == 1:
+            header += b"\x00"
+        for i in range(0, len(header), 2):
+            checksum += (header[i] << 8) + header[i + 1]
+            checksum = (checksum & 0xFFFF) + (checksum >> 16)
+        return ~checksum & 0xFFFF
