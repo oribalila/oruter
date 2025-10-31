@@ -23,6 +23,10 @@ from protocols.constants.icmp_constants import (
 current_identifier = cycle(range(0, int.from_bytes(b"\xff" * IDENTIFIER.size) + 1))
 
 
+def get_time_bytes():
+    return int(time.time()).to_bytes(8, "little")
+
+
 @dataclass
 class ICMP:
     """This class represents and handles an ICMP header."""
@@ -32,7 +36,7 @@ class ICMP:
     checksum: int = 0
     identifier: int = field(default_factory=current_identifier.__next__)
     sequence_number: int = 1
-    timestamp: bytes = int(time.time()).to_bytes(8, "little")
+    timestamp: bytes = field(default_factory=get_time_bytes)
     data: bytes = b"supercyberdevopsnetworkingaiquatumgitopsanswer42"
 
     @classmethod
