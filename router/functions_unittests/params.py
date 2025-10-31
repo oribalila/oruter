@@ -7,6 +7,8 @@ from netaddr import EUI
 
 
 sys.path.append(str(Path(__file__).resolve().parent.parent))
+from packet import Packet
+
 from protocols.arp import ARP
 from protocols.icmp import ICMP
 from protocols.ipv4 import IPv4
@@ -202,6 +204,17 @@ arp_headers_bytes = [
     b"\x00\x01\x08\x00\x06\x04\x00\x01\xaf\x84@bw\xdb\xcd\x85\xc8\xc4\x00\x00\x00\x00\x00\x00\xe5r\xa3\xf2",
     b'\x00\x01\x08\x00\x06\x04\x00\x01)"\xbb\xcf&(\xe0\xd1\xaa\x02\x00\x00\x00\x00\x00\x00\xe8\xa8\xf0\xbd',
     b"\x00\x01\x08\x00\x06\x04\x00\x01JH\xc2\xf6\x1d\xa4wlz\xff\x00\x00\x00\x00\x00\x00&\x1f\x8e\xaf",
+]
+
+arp_packets = [
+    Packet(layers=[ethernet_header, arp_header])
+    for (ethernet_header, arp_header) in zip(arp_ethernet_headers, arp_headers, strict=False)
+]
+arp_packets_bytes = [
+    ethernet_header_bytes + arp_header_bytes
+    for (ethernet_header_bytes, arp_header_bytes) in zip(
+        arp_ethernet_headers_bytes, arp_headers_bytes, strict=False
+    )
 ]
 
 # -- Ethernet + IPv4 + ICMP --
@@ -852,4 +865,36 @@ icmp_request_headers_bytes = [
     b"\x08\x00\x9e\xd6\x0e\xdf\x00\x01\xa4\xe38e\x00\x00\x00\x00m",
     b"\x08\x00\xf6\xd5\x0e\xe0\x00\x01\xa4\xe38e\x00\x00\x00\x00\x15",
     b"\x08\x00x\xd4\x0e\xe1\x00\x01\xa4\xe38e\x00\x00\x00\x00\x93",
+]
+
+icmp_request_packets = [
+    Packet(layers=[ethernet_header, ipv4_header, icmp_header])
+    for (ethernet_header, ipv4_header, icmp_header) in zip(
+        ipv4_ethernet_headers, ipv4_original_headers, icmp_request_headers, strict=False
+    )
+]
+icmp_request_packets_bytes = [
+    ethernet_header_bytes + ipv4_header_bytes + icmp_header_bytes
+    for (ethernet_header_bytes, ipv4_header_bytes, icmp_header_bytes) in zip(
+        ipv4_ethernet_headers_bytes,
+        ipv4_original_headers_bytes,
+        icmp_request_headers_bytes,
+        strict=False,
+    )
+]
+
+icmp_reply_packets = [
+    Packet(layers=[ethernet_header, ipv4_header, icmp_header])
+    for (ethernet_header, ipv4_header, icmp_header) in zip(
+        ipv4_ethernet_headers, ipv4_altered_headers, icmp_reply_headers, strict=False
+    )
+]
+icmp_reply_packets_bytes = [
+    ethernet_header_bytes + ipv4_header_bytes + icmp_header_bytes
+    for (ethernet_header_bytes, ipv4_header_bytes, icmp_header_bytes) in zip(
+        ipv4_ethernet_headers_bytes,
+        ipv4_altered_headers_bytes,
+        icmp_reply_headers_bytes,
+        strict=False,
+    )
 ]
