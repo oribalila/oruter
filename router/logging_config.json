@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "disable_existing_loggers": false,
+  "formatters": {
+    "simple": {
+      "format": "%(asctime)s - %(levelname)s: %(message)s | context=%(context)s",
+      "datefmt": "%Y-%m-%dT%H:%M:%S%z"
+    },
+    "detailed": {
+      "format": "%(asctime)s - %(levelname)s: [%(module)s|Line: %(lineno)d|%(message)s] | context=%(context)s",
+      "datefmt": "%Y-%m-%dT%H:%M:%S%z"
+    }
+  },
+  "handlers": {
+    "stderr": {
+      "class": "logging.StreamHandler",
+      "level": "WARNING",
+      "formatter": "detailed",
+      "stream": "ext://sys.stderr"
+    },
+    "stdout": {
+      "class": "logging.StreamHandler",
+      "level": "INFO",
+      "formatter": "simple",
+      "stream": "ext://sys.stdout"
+    },
+    "file": {
+      "class": "logging.handlers.RotatingFileHandler",
+      "level": "DEBUG",
+      "formatter": "detailed",
+      "filename": "logs/router.log",
+      "mode": "a",
+      "maxBytes": 8000000,
+      "backupCount": 3
+    }
+  },
+  "root": {
+    "level": "DEBUG",
+    "handlers": [
+      "stdout",
+      "stderr",
+      "file"
+    ]
+  }
+}

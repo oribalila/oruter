@@ -5,3 +5,4 @@ __pycache__
 unit_tests.pyc
 build
 oruter.egg-info
+logs
