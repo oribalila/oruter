@@ -1,6 +1,7 @@
 import os
 import copy
 import json
+import time
 import logging
 import subprocess
 import logging.config
@@ -65,16 +66,26 @@ class Router:
         self.MTU = DEFAULT_MTU
         self.REAL_MTU = self.MTU + 14
         for interface in self.interfaces:
-            mac = (
-                str(
-                    subprocess.run(
-                        f"ip link show dev {interface}".split(), capture_output=True
-                    ).stdout
-                )
-                .split("\\n")[1]
-                .split()[1]
-            )
-            mac = EUI(mac)
+            mac = None
+            while mac is None:
+                try:
+                    mac = (
+                        str(
+                            subprocess.run(
+                                f"ip link show dev {interface}".split(), capture_output=True
+                            ).stdout
+                        )
+                        .split("\\n")[1]
+                        .split()[1]
+                    )
+                    mac = EUI(mac)
+                except IndexError:
+                    WAIT_SECONDS = 5
+                    logger.warning(
+                        f"Interface could not be found (did you start the lab?). Retrying in {WAIT_SECONDS} seconds...",
+                        extra={"context": {"interface": interface}},
+                    )
+                    time.sleep(WAIT_SECONDS)
             self.interface_mac[interface] = mac
         logger.debug(
             "Router initialized",
