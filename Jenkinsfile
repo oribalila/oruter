@@ -37,6 +37,19 @@ pipeline {
                 }
             }
         }
+        stage('test-connectivity') {
+            steps {
+                script
+                {
+                    sh '''pip3 install ./router
+                    cd system_tests
+                    . ./test_connectivity.sh
+                    test_connectivity docker_client1_1 2.2.2.2 150
+                    test_connectivity docker_client1_1 1.1.1.1 150
+                    test_connectivity docker_client1_1 2.2.2.1 150'''
+                }
+            }
+        }
     }
 
     post {
