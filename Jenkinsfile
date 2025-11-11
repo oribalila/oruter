@@ -27,6 +27,16 @@ pipeline {
                 }
             }
         }
+        stage('unittests') {
+            steps {
+                script
+                {
+                    sh '''pip3 install ./router[test]
+                    cd router/functions_unittests
+                    pytest'''
+                }
+            }
+        }
     }
 
     post {
